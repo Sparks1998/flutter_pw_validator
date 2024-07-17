@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pw_validator/Utilities/SizeConfig.dart';
 
 /// ValidationBarWidget that represent style of each one of them and shows under the TextField
 class ValidationBarComponent extends StatelessWidget {
   final Color color;
+  final double spacing;
+  final int total;
+  final int index;
 
-  ValidationBarComponent({required this.color});
+  ValidationBarComponent({
+    required this.color,
+    required this.total,
+    required this.index,
+    this.spacing = 2.0,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: new Container(
-        /// We Can set, width: double.maxFinite,
-        margin: EdgeInsets.symmetric(horizontal: SizeConfig.width! * 0.005),
-        height: SizeConfig.width! * 0.015,
-        decoration: new BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.all(Radius.circular(SizeConfig.width!))),
+      child: Container(
+        margin: EdgeInsets.only(left: index > 0 ? 2 : 0, right: index < total - 1 ? 2 : 0),
+        height: 6,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(100),
+        ),
       ),
     );
   }

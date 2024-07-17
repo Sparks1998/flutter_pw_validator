@@ -1,34 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pw_validator/Utilities/SizeConfig.dart';
 
 /// ValidationTextWidget that represent style of each one of them and shows as list of condition that you want to the app user
 class ValidationTextWidget extends StatelessWidget {
   final Color color;
   final String text;
   final int? value;
+  final double indicatorRadius;
+  final double fontSize;
 
-  ValidationTextWidget(
-      {required this.color, required this.text, required this.value});
+  ValidationTextWidget({
+    required this.color,
+    required this.text,
+    required this.value,
+    required this.indicatorRadius,
+    required this.fontSize,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return new Row(
+    return Row(
       children: [
-        new Container(
-          width: SizeConfig.width! * 0.03,
-          height: SizeConfig.width! * 0.03,
-          child: new CircleAvatar(
+        Container(
+          width: indicatorRadius * 2,
+          height: indicatorRadius * 2,
+          child: CircleAvatar(
             backgroundColor: color,
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(left: SizeConfig.width! * 0.03),
-          child: new Text(
-            text.replaceFirst("-", value.toString()),
-            style:
-                new TextStyle(fontSize: SizeConfig.width! * 0.04, color: color),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(left: indicatorRadius * 2),
+            child: Text(
+              text.replaceFirst("-", value.toString()),
+              style: TextStyle(
+                fontSize: fontSize,
+                color: color,
+              ),
+            ),
           ),
-        )
+        ),
       ],
     );
   }
