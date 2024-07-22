@@ -156,12 +156,12 @@ class FlutterPwValidatorState extends State<FlutterPwValidator> {
       widget.lowercaseCharCount,
       widget.numericCharCount,
       widget.specialCharCount,
-        _hasMinLength
-        _hasMinNormalChar
-        _hasMinUppercaseChar
-        _hasMinLowercaseChar
-        _hasMinNumericChar
-        _hasMinSpecialChar
+      _hasMinLength,
+      _hasMinNormalChar,
+      _hasMinUppercaseChar,
+      _hasMinLowercaseChar,
+      _hasMinNumericChar,
+      _hasMinSpecialChar,
     );
 
     /// Adds a listener callback on TextField to run after input get changed

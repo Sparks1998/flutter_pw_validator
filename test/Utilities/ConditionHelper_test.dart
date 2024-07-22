@@ -10,8 +10,7 @@ void main() {
       conditionsHelper = new ConditionsHelper(FlutterPwValidatorStrings());
     });
 
-    test('Should _selectedCondition.length==3 when we have 3 condition > 0',
-        () {
+    test('Should _selectedCondition.length==3 when we have 3 condition > 0', () {
       // arrange
       int minLength = 10;
       int normalCharCount = 1;
@@ -23,16 +22,21 @@ void main() {
       int expectedResult = 3;
 
       // act
-      conditionsHelper.setSelectedCondition(minLength, normalCharCount,
-          uppercaseCharCount, lowercaseCharCount, numericCharCount, specialCharCount);
+      conditionsHelper.setSelectedCondition(
+        minLength,
+        normalCharCount,
+        uppercaseCharCount,
+        lowercaseCharCount,
+        numericCharCount,
+        specialCharCount,
+      );
       int actualResult = conditionsHelper.getter()!.length;
 
       // assert
       expect(actualResult, expectedResult);
     });
 
-    test('Should _selectedCondition.length==6 when we have 6 condition > 0',
-        () {
+    test('Should _selectedCondition.length==6 when we have 6 condition > 0', () {
       // arrange
       int minLength = 10;
       int normalCharCount = 3;
@@ -44,8 +48,8 @@ void main() {
       int expectedResult = 6;
 
       // act
-      conditionsHelper.setSelectedCondition(minLength, normalCharCount,
-          uppercaseCharCount, lowercaseCharCount, numericCharCount, specialCharCount);
+      conditionsHelper.setSelectedCondition(
+          minLength, normalCharCount, uppercaseCharCount, lowercaseCharCount, numericCharCount, specialCharCount);
       int actualResult = conditionsHelper.getter()!.length;
 
       // assert

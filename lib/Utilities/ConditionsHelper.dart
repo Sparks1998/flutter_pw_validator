@@ -15,21 +15,21 @@ class ConditionsHelper {
     int uppercaseCharCount,
     int lowercaseCharCount,
     int numericCharCount,
-    int specialCharCount,
-    bool hasMinLength,
-    bool hasMinNormalChar,
-    bool hasMinUppercaseChar,
-    bool hasMinLowercaseChar,
-    bool hasMinNumericChar,
-    bool hasMinSpecialChar,
-  ) {
+    int specialCharCount, [
+    bool? hasMinLength,
+    bool? hasMinNormalChar,
+    bool? hasMinUppercaseChar,
+    bool? hasMinLowercaseChar,
+    bool? hasMinNumericChar,
+    bool? hasMinSpecialChar,
+  ]) {
     _selectedCondition = {
-      if (minLength > 0) strings.atLeast: hasMinLength,
-      if (normalCharCount > 0) strings.normalLetters: hasMinNormalChar,
-      if (uppercaseCharCount > 0) strings.uppercaseLetters: hasMinUppercaseChar,
-      if (lowercaseCharCount > 0) strings.lowercaseLetters: hasMinLowercaseChar,
-      if (numericCharCount > 0) strings.numericCharacters: hasMinNumericChar,
-      if (specialCharCount > 0) strings.specialCharacters: hasMinSpecialChar,
+      if (minLength > 0) strings.atLeast: hasMinLength ?? false,
+      if (normalCharCount > 0) strings.normalLetters: hasMinNormalChar ?? false,
+      if (uppercaseCharCount > 0) strings.uppercaseLetters: hasMinUppercaseChar ?? false,
+      if (lowercaseCharCount > 0) strings.lowercaseLetters: hasMinLowercaseChar ?? false,
+      if (numericCharCount > 0) strings.numericCharacters: hasMinNumericChar ?? false,
+      if (specialCharCount > 0) strings.specialCharacters: hasMinSpecialChar ?? false,
     };
   }
 
