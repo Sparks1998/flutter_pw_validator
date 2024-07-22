@@ -56,19 +56,19 @@ class FlutterPwValidatorState extends State<FlutterPwValidator> {
   late bool _isFirstRun;
 
   /// Variables that hold current condition states
-  dynamic _hasMinLength,
-      _hasMinNormalChar,
-      _hasMinUppercaseChar,
-      _hasMinLowercaseChar,
-      _hasMinNumericChar,
-      _hasMinSpecialChar;
+  bool _hasMinLength = false,
+      _hasMinNormalChar = false,
+      _hasMinUppercaseChar = false,
+      _hasMinLowercaseChar = false,
+      _hasMinNumericChar = false,
+      _hasMinSpecialChar = false;
 
   //Initial instances of ConditionHelper and Validator class
   late final ConditionsHelper _conditionsHelper;
   Validator _validator = Validator();
 
   /// Get called each time that user entered a character in EditText
-  void validate() {
+  void validate({bool allowSetState = true}) {
     /// For each condition we called validators and get their state
     _hasMinLength = _conditionsHelper.checkCondition(
       widget.minLength,
@@ -132,11 +132,12 @@ class FlutterPwValidatorState extends State<FlutterPwValidator> {
       widget.onFail!();
     }
 
-    //To prevent from calling the setState() after dispose()
-    if (!mounted) return;
-
     //Rebuild the UI
-    setState(() => null);
+    if (allowSetState) {
+      //To prevent from calling the setState() after dispose()
+      if (!mounted) return;
+      setState(() => null);
+    }
     trueCondition = 0;
   }
 
@@ -146,7 +147,6 @@ class FlutterPwValidatorState extends State<FlutterPwValidator> {
     _isFirstRun = true;
 
     _conditionsHelper = ConditionsHelper(translatedStrings);
-    validate();
 
     /// Sets user entered value for each condition
     _conditionsHelper.setSelectedCondition(
@@ -156,13 +156,9 @@ class FlutterPwValidatorState extends State<FlutterPwValidator> {
       widget.lowercaseCharCount,
       widget.numericCharCount,
       widget.specialCharCount,
-      _hasMinLength,
-      _hasMinNormalChar,
-      _hasMinUppercaseChar,
-      _hasMinLowercaseChar,
-      _hasMinNumericChar,
-      _hasMinSpecialChar,
     );
+
+    validate(allowSetState: false);
 
     /// Adds a listener callback on TextField to run after input get changed
     widget.controller.addListener(() {
@@ -222,20 +218,22 @@ class FlutterPwValidatorState extends State<FlutterPwValidator> {
                         (entry) {
                           int? value;
 
-                          if (entry.key == translatedStrings.atLeast)
+                          if (entry.key == translatedStrings.atLeast) {
                             value = widget.minLength;
-                          else if (entry.key == translatedStrings.normalLetters)
+                          } else if (entry.key == translatedStrings.normalLetters) {
                             value = widget.normalCharCount;
-                          else if (entry.key == translatedStrings.uppercaseLetters)
+                          } else if (entry.key == translatedStrings.uppercaseLetters) {
                             value = widget.uppercaseCharCount;
-                          else if (entry.key == translatedStrings.lowercaseLetters)
+                          } else if (entry.key == translatedStrings.lowercaseLetters) {
                             value = widget.lowercaseCharCount;
-                          else if (entry.key == translatedStrings.numericCharacters)
+                          } else if (entry.key == translatedStrings.numericCharacters) {
                             value = widget.numericCharCount;
-                          else if (entry.key == translatedStrings.specialCharacters) value = widget.specialCharCount;
+                          } else if (entry.key == translatedStrings.specialCharacters) {
+                            value = widget.specialCharCount;
+                          }
 
                           return ValidationTextWidget(
-                            color: _isFirstRun
+                            color: _isFirstRun && !entry.value
                                 ? widget.defaultColor
                                 : entry.value
                                     ? widget.successColor
