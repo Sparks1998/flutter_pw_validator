@@ -7,6 +7,7 @@ class ValidationTextWidget extends StatelessWidget {
   final int? value;
   final double indicatorRadius;
   final double fontSize;
+  final EdgeInsetsGeometry validationTextPadding;
 
   ValidationTextWidget({
     required this.color,
@@ -14,32 +15,36 @@ class ValidationTextWidget extends StatelessWidget {
     required this.value,
     required this.indicatorRadius,
     required this.fontSize,
+    this.validationTextPadding = EdgeInsets.zero,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: indicatorRadius * 2,
-          height: indicatorRadius * 2,
-          child: CircleAvatar(
-            backgroundColor: color,
+    return Padding(
+      padding: this.validationTextPadding,
+      child: Row(
+        children: [
+          Container(
+            width: indicatorRadius * 2,
+            height: indicatorRadius * 2,
+            child: CircleAvatar(
+              backgroundColor: color,
+            ),
           ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(left: indicatorRadius * 2),
-            child: Text(
-              text.replaceFirst("-", value.toString()),
-              style: TextStyle(
-                fontSize: fontSize,
-                color: color,
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(left: indicatorRadius * 2),
+              child: Text(
+                text.replaceFirst("-", value.toString()),
+                style: TextStyle(
+                  fontSize: fontSize,
+                  color: color,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -6,12 +6,14 @@ class ValidationBarComponent extends StatelessWidget {
   final double spacing;
   final int total;
   final int index;
+  final double validationBarThickness;
 
   ValidationBarComponent({
     required this.color,
     required this.total,
     required this.index,
     this.spacing = 2.0,
+    this.validationBarThickness = 6.0,
   });
 
   @override
@@ -19,7 +21,7 @@ class ValidationBarComponent extends StatelessWidget {
     return Expanded(
       child: Container(
         margin: EdgeInsets.only(left: index > 0 ? 2 : 0, right: index < total - 1 ? 2 : 0),
-        height: 6,
+        height: this.validationBarThickness,
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(100),

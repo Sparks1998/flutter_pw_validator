@@ -1,5 +1,6 @@
 library flutter_pw_validator;
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pw_validator/Utilities/ConditionsHelper.dart';
 import 'package:flutter_pw_validator/Utilities/Validator.dart';
@@ -14,13 +15,16 @@ class FlutterPwValidator extends StatefulWidget {
   final int minLength, normalCharCount, uppercaseCharCount, lowercaseCharCount, numericCharCount, specialCharCount;
   final Color defaultColor, successColor, failureColor;
   final double? width, height;
-  final double indicatorRadius, fontSize, barsSpacing;
+  final double indicatorRadius, fontSize, barsSpacing, validationBarThickness;
   final void Function()? onSuccess;
   final void Function()? onFail;
   final TextEditingController controller;
   final FlutterPwValidatorStrings? strings;
-  final EdgeInsetsGeometry conditionsPadding;
+  final double textBarSpacing;
   final EdgeInsetsGeometry margin;
+  final bool showValidationBar, showValidationText;
+  final TextStyle? style;
+  final EdgeInsetsGeometry validationTextPadding;
 
   FlutterPwValidator({
     this.key,
@@ -41,9 +45,14 @@ class FlutterPwValidator extends StatefulWidget {
     this.strings,
     this.onFail,
     this.fontSize = 12,
-    this.conditionsPadding = EdgeInsets.zero,
+    this.textBarSpacing = 0,
     this.margin = EdgeInsets.zero,
     this.barsSpacing = 2.0,
+    this.validationBarThickness = 6.0,
+    this.showValidationBar = true,
+    this.showValidationText = true,
+    this.style,
+    this.validationTextPadding = EdgeInsets.zero,
   });
 
   @override
@@ -185,69 +194,73 @@ class FlutterPwValidatorState extends State<FlutterPwValidator> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Flexible(
-                  flex: 3,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List.generate(
-                      _conditionsHelper.getter()!.values.length,
-                      (index) {
-                        bool value = _conditionsHelper.getter()!.values.elementAt(index);
+                if (widget.showValidationBar)
+                  Flexible(
+                    flex: 3,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(
+                        _conditionsHelper.getter()!.values.length,
+                        (index) {
+                          bool value = _conditionsHelper.getter()!.values.elementAt(index);
 
-                        return ValidationBarComponent(
-                          color: value ? widget.successColor : widget.defaultColor,
-                          total: _conditionsHelper.getter()!.values.length,
-                          index: index,
-                          spacing: widget.barsSpacing,
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                Flexible(
-                  flex: 7,
-                  child: Padding(
-                    padding: widget.conditionsPadding,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-
-                      //Iterate through the condition map entries and generate ValidationTextWidget for each item in Green or Red Color
-                      children: _conditionsHelper.getter()!.entries.map(
-                        (entry) {
-                          int? value;
-
-                          if (entry.key == translatedStrings.atLeast) {
-                            value = widget.minLength;
-                          } else if (entry.key == translatedStrings.normalLetters) {
-                            value = widget.normalCharCount;
-                          } else if (entry.key == translatedStrings.uppercaseLetters) {
-                            value = widget.uppercaseCharCount;
-                          } else if (entry.key == translatedStrings.lowercaseLetters) {
-                            value = widget.lowercaseCharCount;
-                          } else if (entry.key == translatedStrings.numericCharacters) {
-                            value = widget.numericCharCount;
-                          } else if (entry.key == translatedStrings.specialCharacters) {
-                            value = widget.specialCharCount;
-                          }
-
-                          return ValidationTextWidget(
-                            color: _isFirstRun && !entry.value
-                                ? widget.defaultColor
-                                : entry.value
-                                    ? widget.successColor
-                                    : widget.failureColor,
-                            text: entry.key,
-                            value: value,
-                            indicatorRadius: widget.indicatorRadius,
-                            fontSize: widget.fontSize,
+                          return ValidationBarComponent(
+                            color: value ? widget.successColor : widget.defaultColor,
+                            total: _conditionsHelper.getter()!.values.length,
+                            index: index,
+                            spacing: widget.barsSpacing,
+                            validationBarThickness: widget.validationBarThickness,
                           );
                         },
-                      ).toList(),
+                      ),
                     ),
                   ),
-                )
+                if (widget.showValidationText)
+                  Flexible(
+                    flex: 7,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: widget.textBarSpacing),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+
+                        //Iterate through the condition map entries and generate ValidationTextWidget for each item in Green or Red Color
+                        children: _conditionsHelper.getter()!.entries.map(
+                          (entry) {
+                            int? value;
+
+                            if (entry.key == translatedStrings.atLeast) {
+                              value = widget.minLength;
+                            } else if (entry.key == translatedStrings.normalLetters) {
+                              value = widget.normalCharCount;
+                            } else if (entry.key == translatedStrings.uppercaseLetters) {
+                              value = widget.uppercaseCharCount;
+                            } else if (entry.key == translatedStrings.lowercaseLetters) {
+                              value = widget.lowercaseCharCount;
+                            } else if (entry.key == translatedStrings.numericCharacters) {
+                              value = widget.numericCharCount;
+                            } else if (entry.key == translatedStrings.specialCharacters) {
+                              value = widget.specialCharCount;
+                            }
+
+                            return ValidationTextWidget(
+                              color: _isFirstRun && !entry.value
+                                  ? widget.defaultColor
+                                  : entry.value
+                                      ? widget.successColor
+                                      : widget.failureColor,
+                              text: entry.key,
+                              value: value,
+                              indicatorRadius: widget.indicatorRadius,
+                              fontSize: widget.fontSize,
+                              validationTextPadding: widget.validationTextPadding,
+                            );
+                          },
+                        ).toList(),
+                      ),
+                    ),
+                  )
               ],
             ),
           ),
