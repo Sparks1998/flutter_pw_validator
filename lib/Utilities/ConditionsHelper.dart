@@ -11,26 +11,32 @@ class ConditionsHelper {
   /// Recognize user selected condition from widget constructor to put them on map with their value
   void setSelectedCondition(
     int minLength,
-    normalCharCount,
-    uppercaseCharCount,
-    lowercaseCharCount,
-    numericCharCount,
-    specialCharCount,
+    int normalCharCount,
+    int uppercaseCharCount,
+    int lowercaseCharCount,
+    int numericCharCount,
+    int specialCharCount,
+    bool hasMinLength,
+    bool hasMinNormalChar,
+    bool hasMinUppercaseChar,
+    bool hasMinLowercaseChar,
+    bool hasMinNumericChar,
+    bool hasMinSpecialChar,
   ) {
     _selectedCondition = {
-      if (minLength > 0) strings.atLeast: false,
-      if (normalCharCount > 0) strings.normalLetters: false,
-      if (uppercaseCharCount > 0) strings.uppercaseLetters: false,
-      if (lowercaseCharCount > 0) strings.lowercaseLetters: false,
-      if (numericCharCount > 0) strings.numericCharacters: false,
-      if (specialCharCount > 0) strings.specialCharacters: false,
+      if (minLength > 0) strings.atLeast: hasMinLength,
+      if (normalCharCount > 0) strings.normalLetters: hasMinNormalChar,
+      if (uppercaseCharCount > 0) strings.uppercaseLetters: hasMinUppercaseChar,
+      if (lowercaseCharCount > 0) strings.lowercaseLetters: hasMinLowercaseChar,
+      if (numericCharCount > 0) strings.numericCharacters: hasMinNumericChar,
+      if (specialCharCount > 0) strings.specialCharacters: hasMinSpecialChar,
     };
   }
 
   /// Checks condition value and passed validator, sets that in map and return value;
   bool? checkCondition(
     int userRequestedValue,
-    bool Function (String password, int minLength) validator,
+    bool Function(String password, int minLength) validator,
     TextEditingController controller,
     String key,
     bool? oldValue,

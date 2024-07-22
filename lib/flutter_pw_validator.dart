@@ -146,6 +146,7 @@ class FlutterPwValidatorState extends State<FlutterPwValidator> {
     _isFirstRun = true;
 
     _conditionsHelper = ConditionsHelper(translatedStrings);
+    validate();
 
     /// Sets user entered value for each condition
     _conditionsHelper.setSelectedCondition(
@@ -155,6 +156,12 @@ class FlutterPwValidatorState extends State<FlutterPwValidator> {
       widget.lowercaseCharCount,
       widget.numericCharCount,
       widget.specialCharCount,
+        _hasMinLength
+        _hasMinNormalChar
+        _hasMinUppercaseChar
+        _hasMinLowercaseChar
+        _hasMinNumericChar
+        _hasMinSpecialChar
     );
 
     /// Adds a listener callback on TextField to run after input get changed
